@@ -14,8 +14,13 @@ contract BaseScript is Script {
     }
 
     function setUp() public virtual {
-        bytes32 privateKey = vm.envBytes32("PRIVATE_KEY_ANVIL");
-        deployer = vm.rememberKey(uint256(privateKey));
+        uint256 privateKey;
+        if (block.chainid == 31337) {
+            privateKey = uint256(vm.envBytes32("PRIVATE_KEY_ANVIL"));
+        } else {
+            privateKey = vm.envUint("PRIVATE_KEY");
+        }
+        deployer = vm.rememberKey(privateKey);
         salt = vm.envBytes32("SALT");
     }
 }

@@ -256,6 +256,8 @@ contract DiamondCutBase {
         if (selectorPosition != lastSelectorPosition) {
             bytes4 lastSelector = ds.facetFunctionSelectors[_facetAddress].functionSelectors[lastSelectorPosition];
             ds.facetFunctionSelectors[_facetAddress].functionSelectors[selectorPosition] = lastSelector;
+            // casting to 'uint96' is safe because functionSelectorPosition is always < 2^96
+            // forge-lint: disable-next-line(unsafe-typecast)
             ds.selectorToFacetAndPosition[lastSelector].functionSelectorPosition = uint96(selectorPosition);
         }
 

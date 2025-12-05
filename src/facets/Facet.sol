@@ -32,9 +32,13 @@ abstract contract Facet is ReentrancyGuardUpgradeable {
     /// @notice Restricts function access to the diamond contract owner
     /// @dev Checks msg.sender against owner stored in OwnershipStorage
     modifier onlyDiamondOwner() {
+        _onlyDiamondOwner();
+        _;
+    }
+
+    function _onlyDiamondOwner() internal view {
         if (msg.sender != OwnershipStorage.layout().owner) {
             revert Diamond_UnauthorizedCaller();
         }
-        _;
     }
 }

@@ -1,30 +1,80 @@
-# Blok-a-Thon: Facet Building Hackathon
+# Yield Harvester
 
-Welcome to the **Blok-a-Thon**, a Blok Capital hackathon focused on building modular smart contract facets using the Diamond Proxy pattern (EIP-2535). This repository provides a ready-to-use Foundry setup with a fully configured Diamond Proxy architecture.
+## 1. Executive Summary
+The **Yield Harvester** is a next-generation DeFi wealth-optimization protocol built for the **Blok-a-Thon Hackathon**. It leverages the **Diamond Standard (EIP-2535)** for modularity and upgradeability, combined with an **off-chain AI agent** powered by **Google Gemini** to dynamically optimize yield strategies.
 
-## Hackathon Overview
+Unlike traditional static yield aggregators, this protocol continuously monitors market conditions and automatically reallocates user funds across supported strategies (Aave V3, Compound V3, Yearn) to achieve the best possible APY.
 
-### What is this Hackathon About?
+## 2. System Architecture
+The platform consists of two major layers: **On-Chain Smart Contracts** and an **Off-Chain AI Agent**.
 
-This is a **Facet-Building Hackathon** where participants create modular smart contract functionality (facets) that plug into a Diamond Proxy. Instead of building contracts from scratch, you'll leverage the power of the Diamond standard to create composable, upgradeable features.
+### A. On-Chain: Diamond Proxy (EIP-2535)
+The Diamond Pattern enables modular features and bypasses contract size limits.
 
-### Theme: Wealth Management
+**Components:**
+*   **Diamond Contract**: Main entry point delegating calls to facets.
+*   **YieldHarvesterFacet**: Core business logic containing:
+    *   `deposit()` / `withdraw()`: User funds management
+    *   `harvest()`: Yield claiming
+    *   `autoRebalance()`: AI-authorized capital reallocation
+    *   `updateStrategyApr()`: Demo APR updater
+*   **YieldHarvesterStorage**: Diamond Storage library tracking:
+    *   User balances and positions
+    *   Active yield strategies (Aave, Compound, Yearn)
+    *   Authorized AI agent address
 
-Build DeFi tools that help users **manage and grow their assets** for the long term. Think wealth building, not speculation.
+### B. Off-Chain: AI Agent
+A Python-driven autonomous agent acting as the protocol’s decision-maker.
 
-**Examples:**
-- Token swap mechanisms (like Uniswap)
-- Lending and borrowing protocols (like Aave)
-- Yield farming strategies
-- Any DeFi logic focused on wealth preservation and growth
+**Responsibilities:**
+*   **Market Analysis**: Uses Gemini 2.0 Flash to analyze sentiment and forecast APR trends.
+*   **Decision Engine**: Compares projected returns across strategies.
+*   **Execution Pipeline**:
+    *   Updates APRs on-chain
+    *   Detects users in sub-optimal strategies
+    *   Triggers `autoRebalance` via secure signer
 
-### Supported Blockchains
+## 3. Key Features
 
-- **Arbitrum One** (ARB)
-- **Polygon** (POL)
-- **Avalanche** (AVAX)
-- **Base**
-- **BNB Smart Chain** (BNB)
+### 🤖 AI-Driven Optimization
+*   **Predictive modeling** forecasts APR trends instead of reacting only to current data.
+*   **Automatic rebalancing** handles withdraw–swap–redeposit flow without user involvement.
+
+### 💎 Modular Architecture (Diamond Standard)
+*   **Upgradable and extensible**: New strategies can be added as facets.
+*   **Gas-efficient** due to modularized logic and shared storage.
+
+### 🛡️ Security
+*   **Role-based access** ensures only the AI agent can update APRs or trigger rebalancing.
+*   **Non-Reentrant**: All external functions include reentrancy protection.
+
+## 4. Technical Stack
+*   **Smart Contracts**: Solidity 0.8.20, Foundry
+*   **Architecture**: EIP-2535 Diamond Standard
+*   **AI Engine**: Python + Google Generative AI (Gemini 2.0 Flash)
+*   **Blockchain Interface**: Web3.py
+*   **Target Network**: Arbitrum
+
+## 5. Project Structure
+```
+Blokathon-Foundry-hackathon/
+├── src/
+│   ├── Diamond.sol
+│   └── facets/
+│       └── utilityFacets/
+│           └── YieldHarvester/
+│               ├── YieldHarvesterFacet.sol
+│               ├── YieldHarvesterStorage.sol
+│               └── IYieldHarvester.sol
+├── script/
+│   ├── Deploy.s.sol
+│   └── DeployYieldHarvester.s.sol
+├── ai_agent/
+│   ├── ai_yield_optimizer.py
+│   └── requirements.txt
+└── test/
+    └── YieldHarvester.t.sol
+```
 
 ---
 
