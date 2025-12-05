@@ -1,6 +1,5 @@
 # Yield Harvester with AI
 
-## 1. Executive Summary
 The **Yield Harvester** is a next-generation DeFi wealth-optimization protocol built for the **Blok-a-Thon Hackathon**. It leverages the **Diamond Standard (EIP-2535)** for modularity and upgradeability, combined with an **off-chain AI agent** powered by **Google Gemini** to dynamically optimize yield strategies.
 
 Unlike traditional static yield aggregators, this protocol continuously monitors market conditions and automatically reallocates user funds across supported strategies (Aave V3, Compound V3, Yearn) to achieve the best possible APY.
